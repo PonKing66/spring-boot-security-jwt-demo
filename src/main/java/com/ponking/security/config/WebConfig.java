@@ -1,0 +1,30 @@
+package com.ponking.security.config;
+
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * @author Peng
+ * @date 2020/7/14--10:04
+ **/
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    /**
+     * 跨域
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                //暴露header中的其他属性给客户端应用程序
+                //如果不设置这个属性前端无法通过response header获取到Authorization也就是token
+                .allowedHeaders("Authorization")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .maxAge(3600);
+    }
+}
