@@ -33,6 +33,8 @@ public class JwtUserDetails implements UserDetails {
         this.permissions = permissions;
     }
 
+
+
     /**
      * 认证
      * @return
@@ -42,6 +44,7 @@ public class JwtUserDetails implements UserDetails {
         return this.permissions.stream()
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
+
 
     @Override
     public String getPassword() {

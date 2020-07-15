@@ -26,9 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.getOne(new QueryWrapper<User>().eq("username", username));
+        if(user == null){
+            throw new UsernameNotFoundException("用户名不存在");
+        }
         List<String> authorities = userService.getUserPermissions(username);
 //        List<String> authorities  = userService.getUserRoles(username);
-        User user = userService.getOne(new QueryWrapper<User>().eq("username", username));
         return new JwtUserDetails(user,authorities);
     }
 }

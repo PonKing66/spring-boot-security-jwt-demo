@@ -4,6 +4,7 @@ package com.ponking.system.controller;
 import com.ponking.system.aop.Log;
 import com.ponking.system.dao.MenuDao;
 import com.ponking.system.entity.Menu;
+import com.ponking.system.entity.User;
 import com.ponking.system.service.MenuService;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,14 @@ public class MenuController {
         Assert.notNull(menu,"Menu is NUll or Empty");
         menuService.save(menu);
         return ResponseEntity.ok().build();
+    }
+    @Log
+    @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('sys:user:update')")
+    public ResponseEntity getOne(@PathVariable Integer id) {
+        Assert.notNull(id, "id is NUll or Empty");
+        Menu menu = menuService.getById(id);
+        return ResponseEntity.ok().body(menu);
     }
 
     @Log

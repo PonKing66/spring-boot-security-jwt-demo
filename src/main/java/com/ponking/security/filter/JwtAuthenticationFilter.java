@@ -21,11 +21,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** 如果用户名和密码正确，那么过滤器将创建一个JWT Token 并在HTTP Response 的header中返回它，格式：token: "Bearer +具体token值"
+/**如果用户名和密码正确，那么过滤器将创建一个JWT Token
+ * 并在HTTP Response 的header中返回它，格式：token: "Bearer +具体token值"
+ *
+ *
+ * 2020年7月15日
+ * -- 添加 response json返回json
+ * @see  com.ponking.security.handler.UserAuthenticationProvider
  * @author Peng
  * @date 2020/7/13--23:01
  **/
 @Slf4j
+@Deprecated
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ThreadLocal<Boolean> rememberMe = new ThreadLocal<>();

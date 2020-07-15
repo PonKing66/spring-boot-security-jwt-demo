@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * <p>
  * 系统用户 前端控制器
@@ -37,11 +40,29 @@ public class UserController {
     }
 
     @Log
+    @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('sys:user:update')")
+    public ResponseEntity getOne(@PathVariable Integer id) {
+        Assert.notNull(id, "id is NUll or Empty");
+        User user = userService.getById(id);
+        return ResponseEntity.ok().body(user);
+    }
+
+    @Log
     @PostMapping
     @PreAuthorize("hasAnyAuthority('sys:user:add')")
     public ResponseEntity save(@RequestBody User user) {
         Assert.notNull(user, "Menu is NUll or Empty");
         userService.save(user);
+        return ResponseEntity.ok().build();
+    }
+
+    @Log
+    @PostMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('sys:user:assign:role')")
+    public ResponseEntity assignRole(@PathVariable("id") Integer userId,@RequestBody List<Integer> roleIds) {
+        //todo
+        System.out.println(Arrays.toString(roleIds.toArray()));
         return ResponseEntity.ok().build();
     }
 

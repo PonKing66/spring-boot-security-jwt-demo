@@ -44,6 +44,22 @@ public class JwtTokenUtils {
         return SecurityConstants.TOKEN_PREFIX + tokenPrefix;
     }
 
+    public static String createToken(String username, List<String> roles) {
+        long expiration = SecurityConstants.EXPIRATION_REMEMBER;
+        final Date createdDate = new Date();
+        final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
+        String tokenPrefix = Jwts.builder()
+                .setHeaderParam("type", SecurityConstants.TOKEN_TYPE)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .claim(SecurityConstants.ROLE_CLAIMS, String.join(",", roles))
+                .setIssuer("PonKing")
+                .setIssuedAt(createdDate)
+                .setSubject(username)
+                .setExpiration(expirationDate)
+                .compact();
+        return SecurityConstants.TOKEN_PREFIX + tokenPrefix;
+    }
+
     public boolean isTokenExpired(String token) {
         Date expiredDate = getTokenBody(token).getExpiration();
         return expiredDate.before(new Date());

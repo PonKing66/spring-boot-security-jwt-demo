@@ -1,5 +1,7 @@
-package com.ponking.security.exception;
+package com.ponking.security.handler;
 
+import com.ponking.security.utils.ResultUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -13,7 +15,7 @@ import java.io.IOException;
  * @author Peng
  * @date 2020/7/14--9:38
  **/
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     /**
      * 当用户尝试访问需要权限才能的REST资源而不提供
@@ -26,6 +28,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.sendError(HttpServletResponse.SC_FORBIDDEN,authException.getMessage());
+        ResultUtils.setResponseJson(response,new ResultUtils.Result(HttpServletResponse.SC_UNAUTHORIZED,"未登录"));
     }
 }
